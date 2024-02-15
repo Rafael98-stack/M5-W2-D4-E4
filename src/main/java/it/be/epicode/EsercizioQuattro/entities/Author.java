@@ -9,6 +9,7 @@ import lombok.*;
 @Entity
 @Table(name = "authors")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

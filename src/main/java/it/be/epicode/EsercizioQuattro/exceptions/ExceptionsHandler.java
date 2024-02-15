@@ -16,8 +16,11 @@ public class ExceptionsHandler {
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsPayload handleBadRequest(BadRequestException e) {
-        return new ErrorsPayload(e.getMessage(), LocalDateTime.now());
-    }
+        if (e.getErrorList() != null) {
+
+        } else { return new ErrorsPayload(e.getMessage(), LocalDateTime.now());
+        }
+      }
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorsPayload handleNotFound(NotFoundException e) {

@@ -1,16 +1,19 @@
 package it.be.epicode.EsercizioQuattro.controllers;
 
 import it.be.epicode.EsercizioQuattro.entities.Author;
+import it.be.epicode.EsercizioQuattro.exceptions.BadRequestException;
 import it.be.epicode.EsercizioQuattro.payloads.AuthorDTOClass;
 import it.be.epicode.EsercizioQuattro.services.AuthorsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authors")
+
 public class AuthorsController {
     @Autowired
     AuthorsService authorsService;
@@ -18,7 +21,12 @@ public class AuthorsController {
     // 1. - POST http://localhost:3001/authors (+ req.body)
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED) // <-- 201
-    public Author saveAuthor(@RequestBody @Validated AuthorDTOClass authorDTOClass) throws Exception {
+    public Author saveAuthor(@RequestBody @Validated AuthorDTOClass authorDTOClass, BindingResult validation) throws Exception {
+
+        if (validation.hasErrors()) {
+            System.out.println(validation.getAllErrors());
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return authorsService.save(authorDTOClass);
     }
 
